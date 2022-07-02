@@ -171,14 +171,43 @@ const accounts = [account1, account2];
      calcDisplaySummary(acc);
  }
 
+const startLogOutTimer = function(){
+  const tick = function(){
+    const min = String(Math.trunc(time / 60)).padStart(2,0);
+    const sec = String(time % 60).padStart(2,0);
+
+
+     // In each call, print the remaining time to UI
+    labelTimer.textContent = `${min}:${sec}`;
+
+
+     // When 0 seconds, stop timer and log out user
+    if(time === 0){
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started'
+      containerApp.style.opacity= 0;  
+    }
+     // Decrease 1s
+     time--;
+  }
+  // Set timeto 5 minutes
+  let time = 30;
+  
+
+
+  // Call the timer every second
+  tick();
+  const  timer = setInterval(tick,1000);
+  return timer;
+};
+
  // Event handler
+ let currentAccount, timer;
 
- let currentAccount;
-
- // Fake Always Looged In
+ /* Fake Always Looged In
  currentAccount = account1;
  updateUI(currentAccount);
- containerApp.style.opacity =1;
+ containerApp.style.opacity =1;*/
 
 
  btnLogin.addEventListener('click', function(e){
@@ -212,6 +241,12 @@ const accounts = [account1, account2];
     inputLoginUsername.value = inputLoginPin.value= '';
     inputLoginPin.blur();
 
+    //Timer
+    if(timer) clearInterval(timer)
+    timer = startLogOutTimer();
+
+
+
     // Update UI
     updateUI(currentAccount);
 
@@ -239,6 +274,10 @@ const accounts = [account1, account2];
     // Update UI
     updateUI(currentAccount);
 
+    // Reset the timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
+
   }
  });
 
@@ -258,6 +297,11 @@ const accounts = [account1, account2];
 
     // Update UI
     updateUI(currentAccount);
+
+     // Reset the timer
+     clearInterval(timer);
+     timer = startLogOutTimer();
+     
   },  2500);
   }
   inputLoanAmount.value = '';
