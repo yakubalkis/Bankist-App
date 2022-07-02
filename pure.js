@@ -248,6 +248,8 @@ const accounts = [account1, account2];
   const amount =Math.floor(inputLoanAmount.value);
 
   if(amount  > 0 && currentAccount.movements.some(mov => mov >=  amount*0.1)){
+    setTimeout(function(){
+
     //  ADD movement
     currentAccount.movements.push(amount);
 
@@ -256,6 +258,7 @@ const accounts = [account1, account2];
 
     // Update UI
     updateUI(currentAccount);
+  },  2500);
   }
   inputLoanAmount.value = '';
   
